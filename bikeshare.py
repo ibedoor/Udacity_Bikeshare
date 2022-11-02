@@ -23,10 +23,14 @@ def get_filters():
 
     # TO DO: get user input for month (all, january, february, ... , june)
     month = input('Please, enter the month: ').lower()
-
+    while month not in ('all','january', 'february', 'march', 'april', 'may', 'june'):
+        print("Invaild input. Try again.")
+        
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     day = input('Please, enter the day: ').lower()
-
+    while day not in  ('all','sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'):
+        print("Invaild input. Try again.")
+            
     print('-'*40)
     return city, month, day
 
@@ -126,6 +130,26 @@ def trip_duration_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def display_data(df):
+    """
+    Display contents of the CSV file to the display as requested by
+    the user.
+    """
+
+    start_loc = 0
+    end_loc = 5
+
+    view_data = input('\nWould you like to view 5 rows of individual trip data? Enter yes or no\n').lower()
+
+    if view_data == 'yes':
+        while end_loc <= df.shape[0] - 1:
+            print(df.iloc[start_loc:end_loc,:])
+            start_loc += 5
+            end_loc += 5
+
+            view_data = input("Do you wish to continue?: ").lower()
+            if view_data == 'no':
+                break
 
 def user_stats(df):
     """Displays statistics on bikeshare users."""
@@ -168,7 +192,9 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        display_data(df)
         
+        restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
 
